@@ -1,0 +1,251 @@
+#include "stdio.h"
+
+char* MMIAPICOM_strcpy( char* dst, const char* src);   //字符串拷贝
+char* MMIAPICOM_strncpy(char* dst, const char* src, int length);   //字符串拷贝，限制个数
+char* MMIAPICOM_strcat(char* dst, const char* src);   //字符串拼接
+char* MMIAPICOM_strncat(char* dst, const char* src, int length);  //字符串拼接，限制个数
+int MMIAPICOM_strrevesal(char *dst, const char *src);  //字符串长度
+int MMIAPICOM_strlen(const char *str);   //字符串逆序
+int MMIAPICOM_strstrnum(char dst, const char *src);  //A字符在B字符串第一次出现在第几个位置
+char* MMIAPICOM_strcut(char *src, int pos);  //字符串偏移/简单裁剪
+char* MMIAPICOM_strnumcut(char *dst, char *src, int start, int end);  //字符串裁剪
+char *MMIAPICOM_strstr(char *dst, char *src);
+#define PNULL '\0'
+#define _PARERROR "parameter error"
+
+int main(void)
+{
+	char *s1 = "12";
+	char *s2 = "12345";
+	char *s3 = "0";
+	char *s4 = "";
+	int length = 0;
+	int count = 0;
+	char c1 = '0';
+	int start = 0;
+	int end = 3;
+	
+	s3 = MMIAPICOM_strstr(s1, s2);
+
+	printf("%s\n", s3);
+
+	return 0;
+}
+
+char* MMIAPICOM_strcpy( char* dst, const char* src)
+{
+	char *cp = dst;
+
+    if( NULL == src || NULL == dst )
+    {
+        return 0;
+    }
+
+    while((*cp++ = *src++) != PNULL); 
+
+    return( dst );     
+}
+
+char* MMIAPICOM_strncpy( char* dst, const char* src, int length)
+{
+	char *cp = dst;
+	
+	if(dst == NULL || src == NULL)
+	{
+		return 0;
+	}
+	
+	while((length != 0) && (*cp++ = *src++) != PNULL)
+	{
+		length--;
+	}
+	
+	if(length)
+	{
+		while(--length)
+		{
+			*cp++ = PNULL;
+		}
+	}
+	
+	return 	dst;
+}
+
+char *MMIAPICOM_strcat(char* dst, const char* src)
+{
+	char *cp = dst;
+
+	if(dst == NULL || src == NULL)
+	{
+		return 0;
+	}
+
+	while(*cp)
+	{
+		cp++;
+	}
+
+	while((*cp++ = *src++) != PNULL);
+
+	return dst;
+}
+
+char *MMIAPICOM_strncat(char* dst, const char* src, int length)
+{
+	char *cp = dst;
+
+	if(dst == NULL || src == NULL)
+	{
+		return 0;
+	}
+
+	while(*cp)
+	{
+		cp++;
+	}
+
+	while((length != 0) && (*cp++ = *src++) != PNULL)
+	{
+		length--;
+	}
+	
+	if(length)
+	{
+		while(--length)
+		{
+			*cp++ = PNULL;
+		}
+	}
+
+	return dst;
+}
+
+int MMIAPICOM_strlen(const char *str)
+{
+	int length = 0;
+
+	if(str == NULL)
+	{
+		return 0;
+	}
+
+	while(*str++)
+	{
+		length++;
+	}
+
+	return length;
+}
+
+int MMIAPICOM_strrevesal(char *dst, const char *src)
+{
+	int length = 0;
+	const char *reversal = src;
+	
+	if(dst == NULL || src == NULL)
+	{
+		return 0;
+	}
+	
+	while(*reversal++)
+	{
+		length++;
+	}
+
+	while(length-- != 0)
+	{
+		*dst++ = *(src+length);
+		*dst = PNULL;
+	}
+	
+	return 1;
+}
+
+int MMIAPICOM_strstrnum(char dst, const char *src)
+{
+	int count = 1;
+	
+	if(dst == PNULL || src == PNULL)
+	{
+		return 0;
+	}
+	
+	while(dst != *src && *src != PNULL)
+	{
+		src++;
+		count++;
+	}
+	
+	if(dst == *src)
+	{
+		return count;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+char* MMIAPICOM_strcut(char *src, int pos)
+{
+	char *dst = src;
+	int length = 0;
+	
+	if(src == PNULL)
+	{
+		return PNULL;
+	}
+	
+	if(pos == 0)
+	{
+		return src;
+	}
+	
+	while(*dst++)
+	{
+		length++;
+	}
+	
+	if(pos > length)
+	{
+		return _PARERROR;
+	}
+		
+	return src+pos;
+}
+
+char* MMIAPICOM_strnumcut(char *dst, char *src, int start, int end)
+{
+	char *calc_length = src;
+	char *strcut = dst;
+	int count = 0;
+
+	if(src == PNULL)
+	{
+		return PNULL;
+	}
+		
+	while(*calc_length++)
+	{
+		count++;
+	}
+	
+	if(end > count || start > end)
+	{
+		return dst = _PARERROR;
+	}
+	
+	if(start == 0 && end == 0)
+	{
+		return src;
+	}
+	
+	while(start <= end)
+	{
+		*strcut++ = *(src+start);
+		*strcut = PNULL;
+		start++;
+	}
+	
+	return dst;
+}
